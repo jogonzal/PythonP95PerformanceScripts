@@ -44,7 +44,7 @@ def showHistogram(list, title):
     sortedDurations = np.sort(list)
     percentiles = np.percentile(sortedDurations, p)
     for i in range(0, len(p)):
-        plt.text(8, 0.5 - i * 0.08, 'P' + str(int(p[i])) + ':' + str(round(percentiles[i], 1)), fontsize=8,
+        plt.text(8, 0.5 - i * 0.08, 'P' + str(int(p[i])) + ':' + str(round(percentiles[i], 1)), fontsize=12,
                  fontweight='bold')
     plt.show(block=False)
 
@@ -86,5 +86,6 @@ def runSampleWithCaching():
     showHistogram(totalDuration, 'Total (with caching)')
     plt.show()
 
+np.random.seed(10298301) # Make re-runs constant
 runSampleWithoutCaching()
 runSampleWithCaching()
