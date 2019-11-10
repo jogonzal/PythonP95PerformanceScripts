@@ -32,6 +32,13 @@ def add2Arrays(list1, list2):
         resultArray.append(list1[i] + list2[i])
     return resultArray
 
+# Add 2 arrays
+def max2Arrays(list1, list2):
+    resultArray = []
+    for i in range(0, len(list1)):
+        resultArray.append(max(list1[i], list2[i]))
+    return resultArray
+
 def showHistogram(list, title):
     count, bins, ignored = plt.hist(list, 30, density=True, label='Load time')  # Make a histogram
     plt.title(title)
@@ -86,6 +93,26 @@ def runSampleWithCaching():
     showHistogram(totalDuration, 'Total (with caching)')
     plt.show()
 
+def runSampleWithParallelization():
+    numSamples = 100000
+    durationsForApiCall1 = getNumbersFromCappedNormalDistribution(2, 1, 0.5, numSamples, 0, 0)
+    plt.subplot(221)
+    showHistogram(durationsForApiCall1, 'API call 1')
+
+    durationsForApiCall2 = getNumbersFromCappedNormalDistribution(2, 1.3, 0.4, numSamples, 0, 0)
+    plt.subplot(222)
+    showHistogram(durationsForApiCall2, 'API call 2')
+
+    durationsForApiCall3 = getNumbersFromCappedNormalDistribution(1, 0.7, 0.3, numSamples, 0, 0)
+    plt.subplot(223)
+    showHistogram(durationsForApiCall3, 'API call 3')
+
+    totalDuration = add2Arrays(durationsForApiCall1, max2Arrays(durationsForApiCall2, durationsForApiCall3))
+    plt.subplot(224)
+    showHistogram(totalDuration, 'Total (with parallelizing)')
+    plt.show()
+
 np.random.seed(10298301) # Make re-runs constant
 runSampleWithoutCaching()
 runSampleWithCaching()
+runSampleWithParallelization()
